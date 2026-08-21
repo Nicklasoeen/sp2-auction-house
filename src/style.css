@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-stone text-charcoal font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply rounded-lg bg-forest px-4 py-2 font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply rounded-lg border border-forest px-4 py-2 font-medium text-forest transition hover:bg-forest/5;
+  }
+  .card {
+    @apply rounded-2xl border border-sage/40 bg-white p-6 shadow-sm;
+  }
+  .form-input {
+    @apply w-full rounded-lg border border-sage/60 bg-white px-3 py-2 text-charcoal outline-none focus:border-forest focus:ring-1 focus:ring-forest;
+  }
+  .form-label {
+    @apply mb-1 block text-sm font-medium text-charcoal;
+  }
+  .form-error {
+    @apply mt-1 text-sm text-red-600;
+  }
+}
