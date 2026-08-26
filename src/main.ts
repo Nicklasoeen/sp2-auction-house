@@ -10,6 +10,7 @@ import productImageSeven from "./assets/af5ca31b-629a-40e0-be7e-e51cacb590b7-202
 import productImageEight from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
 import productImageNine from "./assets/da55d7a6-5630-4f90-acd6-c9a32c45877d-2026-08-13.jpg";
 import { productCard, type Product } from "./components/product-card";
+import { footer } from "./components/footer";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -247,4 +248,6 @@ app.innerHTML = `
       </div>
     </div>
   </section>
+
+  ${footer()}
 `;
