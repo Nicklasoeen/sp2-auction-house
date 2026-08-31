@@ -2,7 +2,7 @@
  * wrapper around localStorage for the auth session
  */
 
-import type { UserProfile } from "../api/auth";
+import type { AuthUser } from "../api/auth";
 
 const ACCESS_TOKEN_KEY = "rekit_access_token";
 const API_KEY_KEY = "rekit_api_key";
@@ -24,16 +24,16 @@ export function getApiKey(): string | null {
   return localStorage.getItem(API_KEY_KEY);
 }
 
-export function saveUserProfile(profile: UserProfile): void {
+export function saveUserProfile(profile: AuthUser): void {
   localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profile));
 }
 
-export function getUserProfile(): UserProfile | null {
+export function getUserProfile(): AuthUser | null {
   const raw = localStorage.getItem(USER_PROFILE_KEY);
   if (!raw) return null;
 
   try {
-    return JSON.parse(raw) as UserProfile;
+    return JSON.parse(raw) as AuthUser;
   } catch {
     return null;
   }

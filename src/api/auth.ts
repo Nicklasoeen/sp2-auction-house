@@ -1,29 +1,8 @@
 /**
- * Noroff API v2 authentication calls (register, login, create-api-key)
+ * noroff API authentication client (register, login, create-api-key)
  */
 
 const API_BASE_URL = "https://v2.api.noroff.dev";
-
-export interface NoroffApiError {
-  message: string;
-}
-
-export interface NoroffErrorResponse {
-  errors: NoroffApiError[];
-  status?: string;
-  statusCode?: number;
-}
-
-/** thrown for any failed API call so callers can show a friendly message */
-export class ApiError extends Error {
-  statusCode?: number;
-
-  constructor(message: string, statusCode?: number) {
-    super(message);
-    this.name = "ApiError";
-    this.statusCode = statusCode;
-  }
-}
 
 export interface RegisterPayload {
   name: string;
@@ -31,78 +10,68 @@ export interface RegisterPayload {
   password: string;
 }
 
-export interface UserProfile {
-  name: string;
-  email: string;
-  bio?: string;
-  avatar?: { url: string; alt: string };
-  banner?: { url: string; alt: string };
-}
-
 export interface LoginPayload {
   email: string;
   password: string;
 }
 
-export interface LoginResult extends UserProfile {
+export interface AuthUser {
+  name: string;
+  email: string;
   accessToken: string;
+}
+
+export interface ApiKeyResponse {
+  data: {
+    key: string;
+  };
+}
+
+export interface ApiErrorResponse {
+  errors: { message: string }[];
+  status: string;
+  statusCode: number;
 }
 
 interface NoroffDataResponse<T> {
   data: T;
 }
 
-/** Reads the API's error format and throws a single readable ApiError. */
-async function parseErrorResponse(response: Response): Promise<never> {
-  let message = `Request failed with status ${response.status}`;
+/** parses the response, returns body or error */
+async function handleApiResponse<T>(response: Response): Promise<T> {
+  const body = await response.json();
 
-  try {
-    const body: NoroffErrorResponse = await response.json();
-    if (body.errors?.length) {
-      message = body.errors.map((e) => e.message).join(" ");
-    }
-  } catch {
-    // Response had no JSON body; fall back to the default message above
+  if (!response.ok) {
+    const errorBody = body as ApiErrorResponse;
+    const message = errorBody.errors?.[0]?.message ?? "Something went wrong";
+    throw new Error(message);
   }
 
-  throw new ApiError(message, response.status);
+  return (body as NoroffDataResponse<T>).data;
 }
 
-/** registers a new user */
 export async function registerUser(
   payload: RegisterPayload,
-): Promise<UserProfile> {
+): Promise<AuthUser> {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    await parseErrorResponse(response);
-  }
-
-  const { data }: NoroffDataResponse<UserProfile> = await response.json();
-  return data;
+  return handleApiResponse<AuthUser>(response);
 }
 
-/** logs a user in and returns their profile plus a JWT access token */
-export async function loginUser(payload: LoginPayload): Promise<LoginResult> {
+export async function loginUser(payload: LoginPayload): Promise<AuthUser> {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    await parseErrorResponse(response);
-  }
-
-  const { data }: NoroffDataResponse<LoginResult> = await response.json();
-  return data;
+  return handleApiResponse<AuthUser>(response);
 }
 
-/** creates an API key for the logged-in user */
 export async function createApiKey(accessToken: string): Promise<string> {
   const response = await fetch(`${API_BASE_URL}/auth/create-api-key`, {
     method: "POST",
@@ -112,11 +81,6 @@ export async function createApiKey(accessToken: string): Promise<string> {
     },
   });
 
-  if (!response.ok) {
-    await parseErrorResponse(response);
-  }
-
-  const { data }: NoroffDataResponse<{ apiKey: string }> =
-    await response.json();
-  return data.apiKey;
+  const { key } = await handleApiResponse<ApiKeyResponse["data"]>(response);
+  return key;
 }
