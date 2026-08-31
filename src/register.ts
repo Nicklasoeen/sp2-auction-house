@@ -144,7 +144,9 @@ form.addEventListener("submit", async (e) => {
   }
 
   if (!isValidName(name)) {
-    showError("Name can only contain letters, numbers, and underscores (no spaces).");
+    showError(
+      "Name can only contain letters, numbers, and underscores (no spaces).",
+    );
     return;
   }
 
