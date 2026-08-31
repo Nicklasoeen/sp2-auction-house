@@ -2,50 +2,39 @@
  * wrapper around localStorage for the auth session
  */
 
-import type { AuthUser } from "../api/auth";
+const NAME_KEY = "rekit_name";
+const EMAIL_KEY = "rekit_email";
+const ACCESS_TOKEN_KEY = "rekit_accessToken";
+const API_KEY_KEY = "rekit_apiKey";
 
-const ACCESS_TOKEN_KEY = "rekit_access_token";
-const API_KEY_KEY = "rekit_api_key";
-const USER_PROFILE_KEY = "rekit_user_profile";
-
-export function saveAccessToken(token: string): void {
-  localStorage.setItem(ACCESS_TOKEN_KEY, token);
+export interface StoredAuth {
+  name: string;
+  email: string;
+  accessToken: string;
+  apiKey: string;
 }
 
-export function getAccessToken(): string | null {
-  return localStorage.getItem(ACCESS_TOKEN_KEY);
+export function saveAuth(user: StoredAuth): void {
+  localStorage.setItem(NAME_KEY, user.name);
+  localStorage.setItem(EMAIL_KEY, user.email);
+  localStorage.setItem(ACCESS_TOKEN_KEY, user.accessToken);
+  localStorage.setItem(API_KEY_KEY, user.apiKey);
 }
 
-export function saveApiKey(apiKey: string): void {
-  localStorage.setItem(API_KEY_KEY, apiKey);
+export function getAuth(): StoredAuth | null {
+  const name = localStorage.getItem(NAME_KEY);
+  const email = localStorage.getItem(EMAIL_KEY);
+  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+  const apiKey = localStorage.getItem(API_KEY_KEY);
+
+  if (!name || !email || !accessToken || !apiKey) return null;
+
+  return { name, email, accessToken, apiKey };
 }
 
-export function getApiKey(): string | null {
-  return localStorage.getItem(API_KEY_KEY);
-}
-
-export function saveUserProfile(profile: AuthUser): void {
-  localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profile));
-}
-
-export function getUserProfile(): AuthUser | null {
-  const raw = localStorage.getItem(USER_PROFILE_KEY);
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw) as AuthUser;
-  } catch {
-    return null;
-  }
-}
-
-export function isLoggedIn(): boolean {
-  return Boolean(getAccessToken() && getApiKey());
-}
-
-/** clears auth session */
-export function clearAuthSession(): void {
+export function clearAuth(): void {
+  localStorage.removeItem(NAME_KEY);
+  localStorage.removeItem(EMAIL_KEY);
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(API_KEY_KEY);
-  localStorage.removeItem(USER_PROFILE_KEY);
 }

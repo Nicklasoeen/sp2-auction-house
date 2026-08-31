@@ -1,6 +1,7 @@
 import "./style.css";
 import authImage from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
 import { registerUser, loginUser, createApiKey } from "./api/auth";
+import { saveAuth } from "./utils/auth-storage";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -46,10 +47,11 @@ app.innerHTML = `
             <input
               type="text"
               id="name"
-              placeholder="Jonas Halvorsen"
+              placeholder="JonasHalvorsen"
               required
               class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal transition-colors placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             />
+            <p class="text-xs text-charcoal/60">No spaces — letters, numbers, and underscores only.</p>
           </div>
 
           <div class="space-y-2">
@@ -108,9 +110,14 @@ const submitButton = form.querySelector<HTMLButtonElement>(
 )!;
 const errorMessage =
   document.querySelector<HTMLParagraphElement>("#form-error")!;
+const submitButtonDefaultText = submitButton.textContent ?? "Sign Up";
 
 function isValidStudentEmail(email: string): boolean {
   return email.toLowerCase().endsWith("@stud.noroff.no");
+}
+
+function isValidName(name: string): boolean {
+  return /^\w+$/.test(name);
 }
 
 function showError(message: string): void {
@@ -136,6 +143,11 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
+  if (!isValidName(name)) {
+    showError("Name can only contain letters, numbers, and underscores (no spaces).");
+    return;
+  }
+
   if (!isValidStudentEmail(email)) {
     showError("Please use your @stud.noroff.no email address.");
     return;
@@ -148,14 +160,18 @@ form.addEventListener("submit", async (e) => {
 
   try {
     submitButton.disabled = true;
+    submitButton.textContent = "Signing up...";
+
     const user = await registerUser({ name, email, password });
     const { accessToken } = await loginUser({ email, password });
     const apiKey = await createApiKey(accessToken);
 
-    console.log(user, accessToken, apiKey);
+    saveAuth({ name: user.name, email: user.email, accessToken, apiKey });
+    window.location.href = "/index.html";
   } catch (error) {
     showError(error instanceof Error ? error.message : "Something went wrong");
   } finally {
     submitButton.disabled = false;
+    submitButton.textContent = submitButtonDefaultText;
   }
 });
