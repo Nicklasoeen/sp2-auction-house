@@ -1,5 +1,6 @@
 import "./style.css";
 import authImage from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
+import { registerUser, loginUser, createApiKey } from "./api/auth";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -75,6 +76,8 @@ app.innerHTML = `
             />
           </div>
 
+          <p id="form-error" class="hidden text-sm text-red-600"></p>
+
           <button
             type="submit"
             class="w-full rounded-lg bg-forest py-3.5 font-medium text-white transition-colors hover:bg-forest/90 active:bg-forest/80"
@@ -95,3 +98,64 @@ app.innerHTML = `
     </div>
   </div>
 `;
+
+const form = document.querySelector<HTMLFormElement>("#signup-form")!;
+const nameInput = document.querySelector<HTMLInputElement>("#name")!;
+const emailInput = document.querySelector<HTMLInputElement>("#email")!;
+const passwordInput = document.querySelector<HTMLInputElement>("#password")!;
+const submitButton = form.querySelector<HTMLButtonElement>(
+  "button[type='submit']",
+)!;
+const errorMessage =
+  document.querySelector<HTMLParagraphElement>("#form-error")!;
+
+function isValidStudentEmail(email: string): boolean {
+  return email.toLowerCase().endsWith("@stud.noroff.no");
+}
+
+function showError(message: string): void {
+  errorMessage.textContent = message;
+  errorMessage.classList.remove("hidden");
+}
+
+function clearError(): void {
+  errorMessage.textContent = "";
+  errorMessage.classList.add("hidden");
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  clearError();
+
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  if (!name || !email || !password) {
+    showError("Please fill in all fields.");
+    return;
+  }
+
+  if (!isValidStudentEmail(email)) {
+    showError("Please use your @stud.noroff.no email address.");
+    return;
+  }
+
+  if (password.length < 8) {
+    showError("Password must be at least 8 characters.");
+    return;
+  }
+
+  try {
+    submitButton.disabled = true;
+    const user = await registerUser({ name, email, password });
+    const { accessToken } = await loginUser({ email, password });
+    const apiKey = await createApiKey(accessToken);
+
+    console.log(user, accessToken, apiKey);
+  } catch (error) {
+    showError(error instanceof Error ? error.message : "Something went wrong");
+  } finally {
+    submitButton.disabled = false;
+  }
+});
