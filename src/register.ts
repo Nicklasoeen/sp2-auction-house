@@ -59,7 +59,7 @@ app.innerHTML = `
             <input
               type="email"
               id="email"
-              placeholder="you@stud.university.edu"
+              placeholder="you@stud.noroff.no"
               required
               class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal transition-colors placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             />

@@ -112,7 +112,7 @@ app.innerHTML = `
             Turn old gear into a new sport.
           </h1>
           <p class="mt-6 max-w-lg text-sm leading-relaxed text-white/85 md:text-base">
-            The marketplace made exclusively for students &mdash; buy, sell, swap, or bid on sports gear with other students.
+            Bid on sports gear from students on your campus. Buy Now and Swap are coming soon.
           </p>
 
           <div class="mt-7 flex flex-wrap gap-3">
