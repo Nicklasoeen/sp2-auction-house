@@ -1,5 +1,7 @@
 import "./style.css";
 import authImage from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
+import { createApiKey, loginUser } from "./api/auth";
+import { saveAuth } from "./utils/auth-storage";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -87,3 +89,56 @@ app.innerHTML = `
     </div>
   </div>
 `;
+
+const form = document.querySelector<HTMLFormElement>("#login-form")!;
+const emailInput = document.querySelector<HTMLInputElement>("#email")!;
+const passwordInput = document.querySelector<HTMLInputElement>("#password")!;
+const submitButton =
+  document.querySelector<HTMLButtonElement>("#login-submit")!;
+const errorMessage =
+  document.querySelector<HTMLParagraphElement>("#form-error")!;
+const submitButtonDefaultText = submitButton.textContent ?? "Log In";
+
+function showError(message: string): void {
+  errorMessage.textContent = message;
+  errorMessage.classList.remove("hidden");
+}
+
+function clearError(): void {
+  errorMessage.textContent = "";
+  errorMessage.classList.add("hidden");
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearError();
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  if (!email || !password) {
+    showError("Please fill in both fields.");
+    return;
+  }
+
+  try {
+    submitButton.disabled = true;
+    submitButton.textContent = "Logging in...";
+
+    const user = await loginUser({ email, password });
+    const apiKey = await createApiKey(user.accessToken);
+
+    saveAuth({
+      name: user.name,
+      email: user.email,
+      accessToken: user.accessToken,
+      apiKey,
+    });
+    window.location.href = "/index.html";
+  } catch (error) {
+    showError(error instanceof Error ? error.message : "Something went wrong");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = submitButtonDefaultText;
+  }
+});
