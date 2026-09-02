@@ -79,6 +79,7 @@ export async function createApiKey(accessToken: string): Promise<string> {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
+    body: JSON.stringify({ name: "rekit" }),
   });
 
   const { key } = await handleApiResponse<ApiKeyResponse["data"]>(response);
