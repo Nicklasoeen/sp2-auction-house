@@ -11,6 +11,7 @@ import productImageEight from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-202
 import productImageNine from "./assets/da55d7a6-5630-4f90-acd6-c9a32c45877d-2026-08-13.jpg";
 import { productCard, type Product } from "./components/product-card";
 import { footer } from "./components/footer";
+import { renderNav } from "./components/nav";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -89,24 +90,6 @@ app.innerHTML = `
 
     <div class="relative z-10 min-h-screen px-6 py-6 text-white md:px-16 md:py-8">
       <div class="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-[1280px] flex-col md:min-h-[calc(100vh-4rem)]">
-        <header class="flex items-center justify-between">
-          <a href="/" class="text-2xl font-medium tracking-wide">REKIT</a>
-
-          <nav class="hidden items-center gap-8 text-xs uppercase tracking-wider md:flex">
-            <a href="#browse" class="transition-opacity hover:opacity-70">Browse</a>
-            <a href="#categories" class="transition-opacity hover:opacity-70">Categories</a>
-            <a href="#how-it-works" class="transition-opacity hover:opacity-70">How it works</a>
-            <a href="#sell" class="transition-opacity hover:opacity-70">Sell your gear</a>
-          </nav>
-
-          <a
-            href="/login.html"
-            class="rounded-lg border border-white/70 px-4 py-2 text-xs transition-colors hover:bg-white hover:text-charcoal"
-          >
-            Log In
-          </a>
-        </header>
-
         <div class="mt-auto max-w-xl pb-2 md:pb-4">
           <h1 class="max-w-lg text-4xl font-semibold leading-tight md:text-6xl">
             Turn old gear into a new sport.
@@ -251,3 +234,5 @@ app.innerHTML = `
 
   ${footer()}
 `;
+
+renderNav("nav-root");
