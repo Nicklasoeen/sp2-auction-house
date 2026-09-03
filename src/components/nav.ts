@@ -12,7 +12,7 @@ export function renderNav(containerId: string): void {
       <a href="/index.html" class="text-2xl font-bold tracking-wide text-forest">REKIT</a>
 
       <div class="hidden items-center gap-8 text-xs font-medium uppercase tracking-wider text-charcoal md:flex">
-        <a href="#browse" class="transition-opacity hover:opacity-60">Browse</a>
+        <a href="/browse.html" class="transition-opacity hover:opacity-60">Browse</a>
         <a href="#categories" class="transition-opacity hover:opacity-60">Categories</a>
         <a href="#how-it-works" class="transition-opacity hover:opacity-60">How it works</a>
         <a href="#sell" class="transition-opacity hover:opacity-60">Sell your gear</a>
