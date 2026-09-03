@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Gear</title>
+  </head>
+  <body class="bg-white text-charcoal">
+    <div id="nav-root"></div>
+
+    <main>
+      <section class="bg-forest px-6 py-14 text-white md:px-16 md:py-20">
+        <div class="mx-auto w-full max-w-[1280px]">
+          <p class="text-sm text-white/60">Home / Browse</p>
+          <h1 class="mt-3 text-4xl font-semibold text-white md:text-5xl">
+            Browse Gear
+          </h1>
+          <p id="listing-count" class="mt-4 text-sm text-white/75">
+            Loading listings...
+          </p>
+        </div>
+      </section>
+
+      <section class="border-b border-stone bg-white px-6 py-6 md:px-16">
+        <div class="mx-auto flex w-full max-w-[1280px] flex-col gap-5">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search listings..."
+            class="w-full max-w-md rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+          />
+
+          <div
+            class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div id="tag-filters" class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                data-tag=""
+                class="rounded-full bg-forest px-4 py-2 text-sm font-medium text-white"
+              >
+                All
+              </button>
+              <button
+                type="button"
+                data-tag="Golf"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Golf
+              </button>
+              <button
+                type="button"
+                data-tag="Tennis"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Tennis
+              </button>
+              <button
+                type="button"
+                data-tag="Ski &amp; Snow"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Ski &amp; Snow
+              </button>
+              <button
+                type="button"
+                data-tag="Running"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Running
+              </button>
+              <button
+                type="button"
+                data-tag="Cycling"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Cycling
+              </button>
+              <button
+                type="button"
+                data-tag="Team Sports"
+                class="rounded-full bg-stone px-4 py-2 text-sm font-medium text-charcoal"
+              >
+                Team Sports
+              </button>
+            </div>
+
+            <select
+              id="sort-select"
+              class="rounded-lg border border-stone bg-white px-4 py-3 text-sm text-charcoal focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+            >
+              <option value="created">Newest</option>
+              <option value="endsAt">Ending soonest</option>
+              <option value="_count.bids">Most bids</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 py-14 md:px-16 md:py-20">
+        <div
+          id="listing-grid"
+          class="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <p class="text-sm text-charcoal/60">Loading...</p>
+        </div>
+
+        <div class="mt-10 text-center">
+          <button id="load-more" type="button" class="hidden">
+            Load more listings
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-root"></div>
+    <script type="module" src="/src/browse.ts"></script>
+  </body>
+</html>
