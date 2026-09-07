@@ -9,6 +9,7 @@ export default defineConfig({
         login: resolve(__dirname, "login.html"),
         register: resolve(__dirname, "register.html"),
         browse: resolve(__dirname, "browse.html"),
+        productDetail: resolve(__dirname, "product-detail.html"),
       },
     },
   },
