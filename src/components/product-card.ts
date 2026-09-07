@@ -1,4 +1,5 @@
 import type { Listing } from "../api/listings";
+import { getTimeLeft } from "../utils/time";
 
 export type Product = {
   image: string;
@@ -34,16 +35,6 @@ export function productCard({
       </div>
     </article>
   `;
-}
-
-function getTimeLeft(endsAt: string): string {
-  const timeLeft = new Date(endsAt).getTime() - Date.now();
-  if (Number.isNaN(timeLeft) || timeLeft <= 0) return "Ended";
-
-  const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
-  if (hoursLeft < 24) return `${Math.max(hoursLeft, 1)}h left`;
-
-  return `${Math.ceil(hoursLeft / 24)}d left`;
 }
 
 export function renderListingCard(listing: Listing): string {

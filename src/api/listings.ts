@@ -13,6 +13,19 @@ export interface Listing {
   seller?: { name: string; email: string };
 }
 
+export interface Bid {
+  id: string;
+  amount: number;
+  bidder: {
+    name: string;
+  };
+  created: string;
+}
+
+export interface ListingWithBids extends Listing {
+  bids?: Bid[];
+}
+
 export interface ListingsResponse {
   data: Listing[];
   meta: {
@@ -79,6 +92,38 @@ export async function getListings(
   const response = await fetch(url);
 
   return handleApiResponse<ListingsResponse>(response);
+}
+
+export async function getListing(id: string): Promise<ListingWithBids> {
+  const params = buildQueryString({ _bids: true, _seller: true });
+  const response = await fetch(
+    `${API_BASE_URL}/auction/listings/${encodeURIComponent(id)}?${params}`,
+  );
+  const result = await handleApiResponse<{ data: ListingWithBids }>(response);
+
+  return result.data;
+}
+
+export async function placeBid(
+  id: string,
+  amount: number,
+  accessToken: string,
+  apiKey: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/auction/listings/${encodeURIComponent(id)}/bids`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ amount }),
+    },
+  );
+
+  await handleApiResponse(response);
 }
 
 export async function searchListings(
