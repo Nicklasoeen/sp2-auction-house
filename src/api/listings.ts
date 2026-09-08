@@ -50,6 +50,14 @@ export interface ListingOptions {
   _seller?: boolean;
 }
 
+export interface ListingPayload {
+  title: string;
+  description: string;
+  tags?: string[];
+  media?: { url: string; alt: string }[];
+  endsAt: string;
+}
+
 interface ApiErrorResponse {
   errors: { message: string }[];
 }
@@ -145,4 +153,70 @@ export async function searchListings(
   );
 
   return handleApiResponse<ListingsResponse>(response);
+}
+
+export async function createListing(
+  payload: ListingPayload,
+  accessToken: string,
+  apiKey: string,
+): Promise<Listing> {
+  const response = await fetch(`${API_BASE_URL}/auction/listings`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "X-Noroff-API-Key": apiKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  const result = await handleApiResponse<{ data: Listing }>(response);
+
+  return result.data;
+}
+
+export async function updateListing(
+  id: string,
+  payload: Partial<ListingPayload>,
+  accessToken: string,
+  apiKey: string,
+): Promise<Listing> {
+  const response = await fetch(
+    `${API_BASE_URL}/auction/listings/${encodeURIComponent(id)}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+  const result = await handleApiResponse<{ data: Listing }>(response);
+
+  return result.data;
+}
+
+export async function deleteListing(
+  id: string,
+  accessToken: string,
+  apiKey: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/auction/listings/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+      },
+    },
+  );
+
+  // delete returns 204 No content, so there is no body to parse.
+  if (response.status === 204) {
+    return;
+  }
+
+  await handleApiResponse(response);
 }
