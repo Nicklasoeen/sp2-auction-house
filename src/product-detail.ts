@@ -24,7 +24,8 @@ const currentBid = document.querySelector<HTMLElement>("#current-bid")!;
 const bidHistoryList =
   document.querySelector<HTMLDivElement>("#bid-history-list")!;
 const bidAmountInput = document.querySelector<HTMLInputElement>("#bid-amount")!;
-const placeBidButton = document.querySelector<HTMLButtonElement>("#place-bid-btn")!;
+const placeBidButton =
+  document.querySelector<HTMLButtonElement>("#place-bid-btn")!;
 const bidError = document.querySelector<HTMLParagraphElement>("#bid-error")!;
 const bidFormArea = bidAmountInput.parentElement!;
 const auth = getAuth();
