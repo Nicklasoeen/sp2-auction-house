@@ -1,3 +1,4 @@
+import "./style.css";
 import { renderNav } from "./components/nav";
 import { renderFooter } from "./components/footer";
 import { createListing } from "./api/listings";
