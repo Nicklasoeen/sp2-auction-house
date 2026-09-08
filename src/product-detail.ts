@@ -1,7 +1,8 @@
 import "./style.css";
 import { renderFooter } from "./components/footer";
 import { renderNav } from "./components/nav";
-import { getListing } from "./api/listings";
+import { getListing, placeBid } from "./api/listings";
+import { getAuth } from "./utils/auth-storage";
 import { getRelativeTime, getTimeLeft } from "./utils/time";
 
 renderNav("nav-root");
@@ -22,6 +23,20 @@ const bidCount = document.querySelector<HTMLElement>("#bid-count")!;
 const currentBid = document.querySelector<HTMLElement>("#current-bid")!;
 const bidHistoryList =
   document.querySelector<HTMLDivElement>("#bid-history-list")!;
+const bidAmountInput = document.querySelector<HTMLInputElement>("#bid-amount")!;
+const placeBidButton = document.querySelector<HTMLButtonElement>("#place-bid-btn")!;
+const bidError = document.querySelector<HTMLParagraphElement>("#bid-error")!;
+const bidFormArea = bidAmountInput.parentElement!;
+const auth = getAuth();
+let highestBidAmount = 0;
+
+if (!auth) {
+  bidFormArea.innerHTML = `
+    <p class="text-center text-sm text-charcoal/70">
+      <a href="/login.html" class="font-medium text-forest hover:underline">Log in</a> to place a bid.
+    </p>
+  `;
+}
 
 async function loadListing(): Promise<void> {
   if (!listingId) {
@@ -33,6 +48,7 @@ async function loadListing(): Promise<void> {
     const listing = await getListing(listingId);
     const bids = listing.bids ?? [];
     const highestBid = Math.max(0, ...bids.map((bid) => bid.amount));
+    highestBidAmount = highestBid;
 
     breadcrumb.textContent = `Home / Browse / ${listing.title}`;
     listingTitle.textContent = listing.title;
@@ -86,6 +102,44 @@ async function loadListing(): Promise<void> {
     listingTitle.textContent =
       error instanceof Error ? error.message : "Listing not found";
   }
+}
+
+if (auth) {
+  placeBidButton.addEventListener("click", async () => {
+    bidError.textContent = "";
+    bidError.classList.add("hidden");
+
+    const amount = Number(bidAmountInput.value);
+
+    // A bid must be a positive number and exceed the highest amount currently shown.
+    if (!Number.isFinite(amount) || amount <= 0 || amount <= highestBidAmount) {
+      bidError.textContent = "Your bid must be higher than the current bid.";
+      bidError.classList.remove("hidden");
+      return;
+    }
+
+    if (!listingId) {
+      bidError.textContent = "Listing not found";
+      bidError.classList.remove("hidden");
+      return;
+    }
+
+    try {
+      placeBidButton.disabled = true;
+      placeBidButton.textContent = "Placing bid...";
+
+      await placeBid(listingId, amount, auth.accessToken, auth.apiKey);
+      bidAmountInput.value = "";
+      await loadListing();
+    } catch (error) {
+      bidError.textContent =
+        error instanceof Error ? error.message : "Something went wrong";
+      bidError.classList.remove("hidden");
+    } finally {
+      placeBidButton.disabled = false;
+      placeBidButton.textContent = "Place Bid";
+    }
+  });
 }
 
 void loadListing();
