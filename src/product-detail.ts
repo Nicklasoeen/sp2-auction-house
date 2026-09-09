@@ -28,6 +28,8 @@ const placeBidButton =
   document.querySelector<HTMLButtonElement>("#place-bid-btn")!;
 const bidError = document.querySelector<HTMLParagraphElement>("#bid-error")!;
 const bidFormArea = bidAmountInput.parentElement!;
+const editListingLink =
+  document.querySelector<HTMLAnchorElement>("#edit-listing-link")!;
 const auth = getAuth();
 let highestBidAmount = 0;
 
@@ -59,6 +61,11 @@ async function loadListing(): Promise<void> {
     bidCount.textContent = `${bids.length} bids`;
     currentBid.textContent = `$${highestBid}`;
 
+    if (auth && listing.seller?.name === auth.name) {
+      editListingLink.classList.remove("hidden");
+      editListingLink.href = `/create-listing.html?id=${listingId}`;
+    }
+
     const firstImage = listing.media[0];
     if (firstImage) {
       mainImage.src = firstImage.url;
@@ -81,7 +88,7 @@ async function loadListing(): Promise<void> {
 
     if (bids.length === 0) return;
 
-    // sort by amount so leading bid matches current bid
+    // sort by amount
     bidHistoryList.innerHTML = [...bids]
       .sort((firstBid, secondBid) => secondBid.amount - firstBid.amount)
       .map(
@@ -112,7 +119,7 @@ if (auth) {
 
     const amount = Number(bidAmountInput.value);
 
-    // A bid must be a positive number and exceed the highest amount currently shown.
+    // A bid must be positive and higher than last bid
     if (!Number.isFinite(amount) || amount <= 0 || amount <= highestBidAmount) {
       bidError.textContent = "Your bid must be higher than the current bid.";
       bidError.classList.remove("hidden");
