@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+  </head>
+  <body class="bg-white text-charcoal">
+    <div id="nav-root"></div>
+
+    <main>
+      <section
+        class="relative overflow-hidden bg-stone px-6 py-14 md:px-16 md:py-20"
+      >
+        <img
+          id="profile-banner"
+          src=""
+          alt=""
+          class="absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+
+        <div
+          class="relative mx-auto flex w-full max-w-[1280px] flex-col gap-6 md:flex-row md:items-center"
+        >
+          <img
+            id="profile-avatar"
+            src=""
+            alt=""
+            class="h-20 w-20 rounded-full bg-forest object-cover"
+          />
+
+          <div class="flex flex-col gap-2">
+            <h1 id="profile-name" class="text-2xl font-bold"></h1>
+            <p id="profile-bio" class="text-sm opacity-70"></p>
+
+            <div class="mt-2 flex flex-wrap gap-6 text-sm">
+              <p>
+                <span
+                  id="stat-listings"
+                  class="font-semibold text-forest"
+                ></span>
+                Active listings
+              </p>
+              <p>
+                <span id="stat-wins" class="font-semibold text-forest"></span>
+                Items won
+              </p>
+              <p>
+                <span
+                  id="stat-credits"
+                  class="font-semibold text-forest"
+                ></span>
+                Credits
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 py-10 md:px-16 md:py-14">
+        <div class="mx-auto w-full max-w-[1280px]">
+          <div class="border-b border-stone">
+            <button
+              id="tab-listings"
+              type="button"
+              class="mr-6 border-b-2 border-forest px-1 pb-3 font-medium text-forest"
+            >
+              My Listings
+            </button>
+            <button
+              id="tab-bids"
+              type="button"
+              class="border-b-2 border-transparent px-1 pb-3 opacity-60"
+            >
+              My Bids
+            </button>
+          </div>
+
+          <div
+            id="listings-panel"
+            class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3"
+          ></div>
+
+          <div
+            id="bids-panel"
+            class="mt-8 hidden overflow-hidden rounded-2xl border border-stone"
+          ></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-root"></div>
+    <script type="module" src="/src/profile.ts"></script>
+  </body>
+</html>
