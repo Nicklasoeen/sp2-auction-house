@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+  </head>
+  <body class="bg-white text-charcoal">
+    <div id="nav-root"></div>
+
+    <main class="bg-white px-6 py-8 md:px-16 md:py-12">
+      <form
+        id="edit-profile-form"
+        class="mx-auto flex w-full max-w-[622px] flex-col gap-5"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="avatar-url" class="text-xs font-medium"
+            >Avatar image</label
+          >
+          <div
+            class="flex min-h-[138px] items-center gap-4 rounded-xl border-2 border-dashed border-sage bg-stone px-6 py-7"
+          >
+            <img
+              id="avatar-preview"
+              src=""
+              alt=""
+              class="h-12 w-12 shrink-0 rounded-full bg-forest object-cover"
+            />
+            <input
+              id="avatar-url"
+              type="url"
+              placeholder="Image URL"
+              class="w-full rounded-lg border border-stone bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="full-name" class="text-xs font-medium">Full name</label>
+          <input
+            id="full-name"
+            type="text"
+            readonly
+            class="w-full rounded-lg border border-stone bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-charcoal/40"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="bio" class="text-xs font-medium">Bio</label>
+          <textarea
+            id="bio"
+            rows="5"
+            class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+          ></textarea>
+        </div>
+
+        <p id="form-error" class="hidden text-sm text-red-600"></p>
+
+        <div class="flex flex-wrap gap-3">
+          <button
+            id="save-btn"
+            type="submit"
+            class="rounded-lg bg-forest px-7 py-3 text-sm text-white transition-colors hover:bg-forest/90"
+          >
+            Save Changes
+          </button>
+          <a
+            href="profile.html"
+            class="rounded-lg border border-stone px-7 py-3 text-sm text-charcoal hover:bg-stone"
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
+    </main>
+
+    <div id="footer-root"></div>
+    <script type="module" src="/src/edit-profile.ts"></script>
+  </body>
+</html>

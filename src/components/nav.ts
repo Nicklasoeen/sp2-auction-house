@@ -22,14 +22,15 @@ export async function renderNav(containerId: string): Promise<void> {
         auth
           ? `
             <div class="flex items-center gap-4">
-              <button
-                type="button"
-                class="flex h-9 w-9 items-center justify-center rounded-full bg-stone text-sm font-semibold text-forest"
+              <a
+                id="profile-avatar-link"
+                href="/profile.html"
+                class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-stone text-sm font-semibold text-forest"
                 aria-label="${auth.name}'s profile"
                 title="${auth.name}"
               >
                 ${auth.name.charAt(0).toUpperCase()}
-              </button>
+              </a>
               <span id="credit-balance" class="rounded-full bg-stone px-3 py-1 text-sm text-forest">...</span>
               <button type="button" id="logout-button" class="text-sm text-forest transition-opacity hover:opacity-60">Log out</button>
               <a href="/create-listing.html" class="hidden rounded-lg bg-forest px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forest/90 sm:inline-flex">List Your Gear</a>
@@ -53,6 +54,11 @@ export async function renderNav(containerId: string): Promise<void> {
         auth.accessToken,
         auth.apiKey,
       );
+      const profileAvatarLink = document.getElementById("profile-avatar-link");
+
+      if (profileAvatarLink && profile.avatar?.url) {
+        profileAvatarLink.innerHTML = `<img src="${profile.avatar.url}" alt="${profile.avatar.alt || `${auth.name}'s profile`}" class="h-full w-full object-cover" />`;
+      }
       if (creditBalance)
         creditBalance.textContent = `${profile.credits} credits`;
     } catch {

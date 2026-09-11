@@ -24,6 +24,12 @@ export interface ProfileBid {
   };
 }
 
+export interface ProfileUpdatePayload {
+  bio: string;
+  avatar?: { url: string; alt: string };
+  banner?: { url: string; alt: string };
+}
+
 interface ApiErrorResponse {
   errors: { message: string }[];
 }
@@ -85,6 +91,28 @@ export async function getProfileBids(
     { headers: authHeaders(accessToken, apiKey) },
   );
   const result = await handleApiResponse<{ data: ProfileBid[] }>(response);
+
+  return result.data;
+}
+
+export async function updateProfile(
+  name: string,
+  payload: ProfileUpdatePayload,
+  accessToken: string,
+  apiKey: string,
+): Promise<Profile> {
+  const response = await fetch(
+    `${API_BASE_URL}/auction/profiles/${encodeURIComponent(name)}`,
+    {
+      method: "PUT",
+      headers: {
+        ...authHeaders(accessToken, apiKey),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+  const result = await handleApiResponse<{ data: Profile }>(response);
 
   return result.data;
 }

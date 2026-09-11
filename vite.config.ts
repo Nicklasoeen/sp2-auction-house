@@ -12,6 +12,7 @@ export default defineConfig({
         productDetail: resolve(__dirname, "product-detail.html"),
         createListing: resolve(__dirname, "create-listing.html"),
         profile: resolve(__dirname, "profile.html"),
+        editProfile: resolve(__dirname, "edit-profile.html"),
       },
     },
   },
