@@ -17,7 +17,14 @@ const listingTitle =
 const listingDescription = document.querySelector<HTMLParagraphElement>(
   "#listing-description",
 )!;
+const listingCategory =
+  document.querySelector<HTMLElement>("#listing-category")!;
+const startingBid = document.querySelector<HTMLElement>("#starting-bid")!;
 const sellerName = document.querySelector<HTMLElement>("#seller-name")!;
+const sellerAvatar = document.querySelector<HTMLElement>("#seller-avatar")!;
+const sellerMeta = document.querySelector<HTMLElement>("#seller-meta")!;
+const listingIdLabel = document.querySelector<HTMLElement>("#listing-id")!;
+const listedDate = document.querySelector<HTMLElement>("#listed-date")!;
 const timeLeft = document.querySelector<HTMLElement>("#time-left")!;
 const bidCount = document.querySelector<HTMLElement>("#bid-count")!;
 const currentBid = document.querySelector<HTMLElement>("#current-bid")!;
@@ -57,9 +64,20 @@ async function loadListing(): Promise<void> {
     listingTitle.textContent = listing.title;
     listingDescription.textContent = listing.description ?? "";
     sellerName.textContent = listing.seller?.name ?? "Unknown";
+    sellerAvatar.textContent = (listing.seller?.name ?? "?")
+      .charAt(0)
+      .toUpperCase();
+    sellerMeta.textContent = `${listing.tags[0] ?? "General"} · ${bids.length} bids`;
     timeLeft.textContent = getTimeLeft(listing.endsAt);
     bidCount.textContent = `${bids.length} bids`;
     currentBid.textContent = `$${highestBid}`;
+    listingCategory.textContent = listing.tags[0] ?? "General";
+    startingBid.textContent = `$${bids.length > 0 ? Math.min(...bids.map((bid) => bid.amount)) : 0}`;
+    listingIdLabel.textContent = listing.id;
+    listedDate.textContent = new Date(listing.created).toLocaleDateString(
+      "en-US",
+      { month: "short", day: "numeric", year: "numeric" },
+    );
 
     if (auth && listing.seller?.name === auth.name) {
       editListingLink.classList.remove("hidden");
@@ -78,7 +96,7 @@ async function loadListing(): Promise<void> {
       thumbnail.src = image.url;
       thumbnail.alt = image.alt || `${listing.title} image ${index + 1}`;
       thumbnail.className =
-        "h-16 w-16 cursor-pointer rounded-lg object-cover ring-1 ring-stone transition-opacity hover:opacity-75";
+        "h-12 w-12 cursor-pointer rounded-lg object-cover ring-1 ring-stone transition-opacity hover:opacity-75";
       thumbnail.addEventListener("click", () => {
         mainImage.src = image.url;
         mainImage.alt = image.alt || listing.title;
@@ -93,17 +111,20 @@ async function loadListing(): Promise<void> {
       .sort((firstBid, secondBid) => secondBid.amount - firstBid.amount)
       .map(
         (bid) => `
-					<div class="flex items-center justify-between gap-4 border-b border-stone px-5 py-4 last:border-b-0">
-						<div>
-							<p class="text-sm font-medium text-charcoal">${bid.bidder.name}</p>
-							<p class="mt-1 text-xs text-charcoal/60">${getRelativeTime(bid.created)}</p>
-						</div>
-						<div class="flex items-center gap-2">
-							<span class="text-sm font-semibold text-forest">$${bid.amount}</span>
-							${bid.amount === highestBid ? '<span class="rounded-full bg-forest px-2 py-1 text-xs font-medium text-white">Highest bid</span>' : ""}
-						</div>
-					</div>
-				`,
+          <div class="flex items-center justify-between gap-4 border-b border-stone px-3 py-2 last:border-b-0 ${bid.amount === highestBid ? "bg-stone" : ""}">
+            <div class="flex items-center gap-3">
+              <span class="flex h-7 w-7 items-center justify-center rounded-full bg-sage text-[10px] font-semibold text-white">${bid.bidder.name.charAt(0).toUpperCase()}</span>
+              <div>
+                <p class="text-xs font-medium text-charcoal">${bid.bidder.name}</p>
+                <p class="text-[9px] text-charcoal/60">${getRelativeTime(bid.created)}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              ${bid.amount === highestBid ? '<span class="rounded-full bg-forest px-2 py-1 text-[8px] font-medium uppercase text-white">Highest bid</span>' : ""}
+              <span class="text-sm font-semibold text-forest">$${bid.amount}</span>
+            </div>
+          </div>
+        `,
       )
       .join("");
   } catch (error) {

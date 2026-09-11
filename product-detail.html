@@ -9,104 +9,151 @@
   <body class="bg-white text-charcoal">
     <div id="nav-root"></div>
 
-    <main class="px-6 py-10 md:px-16 md:py-14">
-      <div class="mx-auto w-full max-w-[1280px]">
+    <main class="px-6 py-8 md:px-16 md:py-10">
+      <div class="mx-auto w-full max-w-[1120px]">
         <p id="breadcrumb" class="text-sm text-charcoal/60">
           Home / Browse / ...
         </p>
 
-        <section class="mt-8 grid gap-8 md:grid-cols-2 md:gap-12">
-          <div>
+        <section
+          class="mt-4 grid gap-10 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,1fr)] lg:gap-12"
+        >
+          <div class="min-w-0">
             <img
               id="main-image"
               src=""
               alt=""
-              class="w-full rounded-2xl bg-stone object-cover"
-              style="aspect-ratio: 4 / 3"
+              class="w-full rounded-xl bg-stone object-cover"
+              style="aspect-ratio: 1.17 / 1"
             />
             <div id="thumbnail-row" class="mt-3 flex gap-2"></div>
           </div>
 
-          <aside class="rounded-2xl border border-stone bg-white p-6 md:p-8">
-            <div class="flex items-start justify-between gap-4">
-              <h1 id="listing-title" class="text-2xl font-bold"></h1>
-              <span
-                class="rounded-full bg-charcoal px-3 py-1 text-xs font-medium uppercase tracking-wide text-white"
-              >
-                Auction
-              </span>
-            </div>
+          <div class="flex flex-col gap-8">
+            <aside class="rounded-xl border border-stone bg-white p-5 md:p-6">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h1 id="listing-title" class="text-xl font-bold"></h1>
+                  <p
+                    class="mt-2 text-[10px] uppercase tracking-wide text-charcoal/60"
+                  >
+                    Current bid · <span id="bid-count"></span>
+                  </p>
+                </div>
+                <span
+                  class="rounded-full bg-charcoal px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-white"
+                >
+                  Auction
+                </span>
+              </div>
 
-            <a
-              id="edit-listing-link"
-              href="#"
-              class="mt-4 inline-block hidden rounded-lg border border-forest px-4 py-2 text-sm text-forest"
-              >Edit listing</a
-            >
-
-            <div class="mt-8">
-              <p
-                class="text-xs font-medium uppercase tracking-wide text-charcoal/60"
+              <a
+                id="edit-listing-link"
+                href="#"
+                class="mt-3 inline-block hidden rounded-lg border border-forest px-3 py-1 text-xs text-forest"
+                >Edit listing</a
               >
-                Current bid
-              </p>
+
               <span
                 id="current-bid"
-                class="mt-2 block text-4xl font-bold text-forest"
+                class="mt-1 block text-3xl font-bold text-forest"
               ></span>
-              <span id="bid-count" class="mt-2 block text-sm opacity-60"></span>
-            </div>
 
-            <dl class="mt-8 border-t border-stone">
-              <div
-                class="flex items-center justify-between gap-4 border-b border-stone py-4 text-sm"
-              >
-                <dt class="text-charcoal/60">Time left</dt>
-                <dd id="time-left" class="font-medium"></dd>
-              </div>
-              <div
-                class="flex items-center justify-between gap-4 border-b border-stone py-4 text-sm"
-              >
-                <dt class="text-charcoal/60">Listed by</dt>
-                <dd id="seller-name" class="font-medium"></dd>
-              </div>
-            </dl>
+              <dl class="mt-6 border-t border-stone">
+                <div
+                  class="flex items-center justify-between gap-4 border-b border-stone py-3 text-xs"
+                >
+                  <dt class="text-charcoal/60">Time left</dt>
+                  <dd id="time-left" class="font-medium"></dd>
+                </div>
+                <div
+                  class="flex items-center justify-between gap-4 border-b border-stone py-3 text-xs"
+                >
+                  <dt class="text-charcoal/60">Category</dt>
+                  <dd id="listing-category" class="font-medium"></dd>
+                </div>
+                <div
+                  class="flex items-center justify-between gap-4 border-b border-stone py-3 text-xs"
+                >
+                  <dt class="text-charcoal/60">Listing type</dt>
+                  <dd class="font-medium">Pure auction</dd>
+                </div>
+                <div
+                  class="flex items-center justify-between gap-4 border-b border-stone py-3 text-xs"
+                >
+                  <dt class="text-charcoal/60">Starting bid</dt>
+                  <dd id="starting-bid" class="font-medium"></dd>
+                </div>
+              </dl>
 
-            <div class="mt-8">
-              <label for="bid-amount" class="block text-sm font-medium"
-                >Your bid</label
+              <div class="mt-6">
+                <label for="bid-amount" class="block text-xs font-medium"
+                  >Your bid</label
+                >
+                <input
+                  type="number"
+                  id="bid-amount"
+                  placeholder="$50 or more"
+                  class="mt-2 w-full rounded-lg border border-stone px-3 py-2 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+                />
+                <button
+                  id="place-bid-btn"
+                  type="button"
+                  class="mt-2 w-full rounded-lg bg-forest py-2 font-medium text-white transition-colors hover:bg-forest/90"
+                >
+                  Place Bid
+                </button>
+                <p class="mt-3 text-center text-[9px] text-charcoal/50">
+                  Every bid is binding and final.
+                </p>
+                <p id="bid-error" class="mt-2 hidden text-sm text-red-600"></p>
+              </div>
+            </aside>
+
+            <aside class="rounded-xl border border-stone bg-white p-5 md:p-6">
+              <p
+                class="text-[10px] uppercase tracking-[0.18em] text-charcoal/60"
               >
-              <input
-                type="number"
-                id="bid-amount"
-                placeholder="Enter your bid"
-                class="mt-2 w-full rounded-lg border border-stone px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
-              />
-              <button
-                id="place-bid-btn"
-                type="button"
-                class="mt-4 w-full rounded-lg bg-forest py-3 font-medium text-white transition-colors hover:bg-forest/90"
-              >
-                Place Bid
-              </button>
-              <p class="mt-3 text-center text-xs text-charcoal/60">
-                Every bid is binding and final.
+                Seller
               </p>
-              <p id="bid-error" class="mt-2 hidden text-sm text-red-600"></p>
-            </div>
-          </aside>
+              <div class="mt-3 flex items-center gap-3">
+                <span
+                  id="seller-avatar"
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-sm font-semibold text-white"
+                ></span>
+                <div>
+                  <p id="seller-name" class="text-sm font-medium"></p>
+                  <p id="seller-meta" class="text-[10px] text-charcoal/60"></p>
+                </div>
+              </div>
+              <dl class="mt-5 border-t border-stone text-[10px]">
+                <div
+                  class="flex items-center justify-between border-b border-stone py-3"
+                >
+                  <dt class="text-charcoal/60">Listing ID</dt>
+                  <dd id="listing-id" class="font-medium"></dd>
+                </div>
+                <div
+                  class="flex items-center justify-between border-b border-stone py-3"
+                >
+                  <dt class="text-charcoal/60">Listed on</dt>
+                  <dd id="listed-date" class="font-medium"></dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
         </section>
 
-        <section class="mt-16 max-w-3xl">
-          <h2 class="text-2xl font-semibold">Description</h2>
+        <section class="mt-16 max-w-[650px]">
+          <h2 class="text-lg font-semibold">Description</h2>
           <p
             id="listing-description"
-            class="mt-4 leading-relaxed text-charcoal/75"
+            class="mt-3 text-sm leading-relaxed text-charcoal/75"
           ></p>
         </section>
 
-        <section class="mt-16 max-w-3xl">
-          <h2 class="text-2xl font-semibold">Bid history</h2>
+        <section class="mt-16 max-w-[650px]">
+          <h2 class="text-lg font-semibold">Bid history</h2>
           <div
             id="bid-history-list"
             class="mt-4 overflow-hidden rounded-2xl border border-stone"
