@@ -1,7 +1,8 @@
 import { getAuth } from "../utils/auth-storage";
 import { logout } from "../utils/logout";
+import { getProfile } from "../api/profile";
 
-export function renderNav(containerId: string): void {
+export async function renderNav(containerId: string): Promise<void> {
   const containerEl = document.getElementById(containerId);
   if (!containerEl) return;
 
@@ -29,6 +30,7 @@ export function renderNav(containerId: string): void {
               >
                 ${auth.name.charAt(0).toUpperCase()}
               </button>
+              <span id="credit-balance" class="rounded-full bg-stone px-3 py-1 text-sm text-forest">...</span>
               <button type="button" id="logout-button" class="text-sm text-forest transition-opacity hover:opacity-60">Log out</button>
               <a href="/create-listing.html" class="hidden rounded-lg bg-forest px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forest/90 sm:inline-flex">List Your Gear</a>
             </div>
@@ -42,5 +44,19 @@ export function renderNav(containerId: string): void {
 
   if (auth) {
     document.getElementById("logout-button")?.addEventListener("click", logout);
+
+    const creditBalance = document.getElementById("credit-balance");
+
+    try {
+      const profile = await getProfile(
+        auth.name,
+        auth.accessToken,
+        auth.apiKey,
+      );
+      if (creditBalance)
+        creditBalance.textContent = `${profile.credits} credits`;
+    } catch {
+      if (creditBalance) creditBalance.textContent = "—";
+    }
   }
 }

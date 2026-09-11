@@ -160,7 +160,7 @@ app.innerHTML = `
 
 `;
 
-renderNav("nav-root");
+await renderNav("nav-root");
 renderFooter("footer-root");
 
 const popularListings =

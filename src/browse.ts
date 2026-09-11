@@ -4,7 +4,7 @@ import { renderNav } from "./components/nav";
 import { getListings, searchListings } from "./api/listings";
 import { renderListingCard } from "./components/product-card";
 
-renderNav("nav-root");
+await renderNav("nav-root");
 renderFooter("footer-root");
 
 const listingGrid = document.querySelector<HTMLDivElement>("#listing-grid")!;

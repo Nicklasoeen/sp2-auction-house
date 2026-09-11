@@ -6,7 +6,7 @@ import { getProfile, getProfileListings, getProfileBids } from "./api/profile";
 import { renderListingCard } from "./components/product-card";
 import { getRelativeTime } from "./utils/time";
 
-renderNav("nav-root");
+await renderNav("nav-root");
 renderFooter("footer-root");
 
 const auth = getAuth();

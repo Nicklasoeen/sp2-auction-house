@@ -9,7 +9,7 @@ import {
 } from "./api/listings";
 import { getAuth } from "./utils/auth-storage";
 
-renderNav("nav-root");
+await renderNav("nav-root");
 renderFooter("footer-root");
 
 const auth = getAuth();

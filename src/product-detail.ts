@@ -5,7 +5,7 @@ import { getListing, placeBid } from "./api/listings";
 import { getAuth } from "./utils/auth-storage";
 import { getRelativeTime, getTimeLeft } from "./utils/time";
 
-renderNav("nav-root");
+await renderNav("nav-root");
 renderFooter("footer-root");
 
 const listingId = new URLSearchParams(window.location.search).get("id");
@@ -169,6 +169,7 @@ if (auth) {
       await placeBid(listingId, amount, auth.accessToken, auth.apiKey);
       bidAmountInput.value = "";
       await loadListing();
+      await renderNav("nav-root");
     } catch (error) {
       bidError.textContent =
         error instanceof Error ? error.message : "Something went wrong";
