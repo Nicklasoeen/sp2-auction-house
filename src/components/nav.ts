@@ -8,14 +8,13 @@ export function renderNav(containerId: string): void {
   const auth = getAuth();
 
   containerEl.innerHTML = `
-    <nav class="flex items-center justify-between gap-6 border-b border-stone bg-white px-6 py-4 md:px-16">
+    <nav class="relative flex items-center justify-between gap-6 border-b border-stone bg-white px-6 py-4 md:px-16">
       <a href="/index.html" class="text-2xl font-bold tracking-wide text-forest">REKIT</a>
 
-      <div class="hidden items-center gap-8 text-xs font-medium uppercase tracking-wider text-charcoal md:flex">
+      <div class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-xs font-medium uppercase tracking-wider text-charcoal md:flex">
+        <a href="/index.html" class="transition-opacity hover:opacity-60">Home</a>
         <a href="/browse.html" class="transition-opacity hover:opacity-60">Browse</a>
-        <a href="#categories" class="transition-opacity hover:opacity-60">Categories</a>
-        <a href="#how-it-works" class="transition-opacity hover:opacity-60">How it works</a>
-        <a href="#sell" class="transition-opacity hover:opacity-60">Sell your gear</a>
+        <a href="/index.html#how-it-works" class="transition-opacity hover:opacity-60">How It Works</a>
       </div>
 
       ${
@@ -31,7 +30,7 @@ export function renderNav(containerId: string): void {
                 ${auth.name.charAt(0).toUpperCase()}
               </button>
               <button type="button" id="logout-button" class="text-sm text-forest transition-opacity hover:opacity-60">Log out</button>
-              <a href="#sell" class="hidden rounded-lg bg-forest px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forest/90 sm:inline-flex">List Your Gear</a>
+              <a href="/create-listing.html" class="hidden rounded-lg bg-forest px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-forest/90 sm:inline-flex">List Your Gear</a>
             </div>
           `
           : `

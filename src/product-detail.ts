@@ -9,7 +9,8 @@ renderNav("nav-root");
 renderFooter("footer-root");
 
 const listingId = new URLSearchParams(window.location.search).get("id");
-const breadcrumb = document.querySelector<HTMLParagraphElement>("#breadcrumb")!;
+const breadcrumbTitle =
+  document.querySelector<HTMLSpanElement>("#breadcrumb-title")!;
 const mainImage = document.querySelector<HTMLImageElement>("#main-image")!;
 const thumbnailRow = document.querySelector<HTMLDivElement>("#thumbnail-row")!;
 const listingTitle =
@@ -60,7 +61,7 @@ async function loadListing(): Promise<void> {
     const highestBid = Math.max(0, ...bids.map((bid) => bid.amount));
     highestBidAmount = highestBid;
 
-    breadcrumb.textContent = `Home / Browse / ${listing.title}`;
+    breadcrumbTitle.textContent = listing.title;
     listingTitle.textContent = listing.title;
     listingDescription.textContent = listing.description ?? "";
     sellerName.textContent = listing.seller?.name ?? "Unknown";
