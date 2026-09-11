@@ -50,7 +50,7 @@ export function renderListingCard(listing: Listing): string {
       <div class="relative h-60 bg-stone">
         ${
           image
-            ? `<img src="${image.url}" alt="${image.alt || listing.title}" class="h-full w-full object-cover rounded-lg" />`
+            ? `<img src="${image.url}" alt="${image.alt || listing.title}" class="h-full w-full rounded-lg object-cover" onerror="this.onerror=null; this.style.display='none';" />`
             : `<div class="h-full w-full bg-stone"></div>`
         }
         <span class="absolute left-3 top-3 rounded-full bg-charcoal px-3 py-1 text-xs font-medium uppercase tracking-wide text-white">

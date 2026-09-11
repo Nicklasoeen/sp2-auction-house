@@ -35,12 +35,20 @@ async function loadListings(append = false): Promise<void> {
       : await getListings({
           page: currentPage,
           tag: currentTag,
-          sort: currentSort,
+          sort: currentSort === "_count.bids" ? undefined : currentSort,
           sortOrder: currentSortOrder,
           active: true,
         });
 
-    const cards = result.data.map(renderListingCard).join("");
+    const listings =
+      currentSort === "_count.bids"
+        ? [...result.data].sort(
+            (firstListing, secondListing) =>
+              (secondListing._count?.bids ?? 0) -
+              (firstListing._count?.bids ?? 0),
+          )
+        : result.data;
+    const cards = listings.map(renderListingCard).join("");
     listingGrid.innerHTML = append ? listingGrid.innerHTML + cards : cards;
     listingCount.textContent = `${result.meta.totalCount} active listings — buy now, bid, or swap.`;
     loadMoreButton.classList.toggle("hidden", result.meta.isLastPage);

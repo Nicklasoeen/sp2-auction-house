@@ -89,6 +89,10 @@ async function loadListing(): Promise<void> {
     if (firstImage) {
       mainImage.src = firstImage.url;
       mainImage.alt = firstImage.alt || listing.title;
+      mainImage.onerror = () => {
+        mainImage.removeAttribute("src");
+        mainImage.classList.add("bg-stone");
+      };
     }
 
     thumbnailRow.innerHTML = "";
@@ -98,6 +102,10 @@ async function loadListing(): Promise<void> {
       thumbnail.alt = image.alt || `${listing.title} image ${index + 1}`;
       thumbnail.className =
         "h-12 w-12 cursor-pointer rounded-lg object-cover ring-1 ring-stone transition-opacity hover:opacity-75";
+      thumbnail.onerror = () => {
+        thumbnail.removeAttribute("src");
+        thumbnail.classList.add("bg-stone");
+      };
       thumbnail.addEventListener("click", () => {
         mainImage.src = image.url;
         mainImage.alt = image.alt || listing.title;
