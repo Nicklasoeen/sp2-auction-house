@@ -1,85 +1,11 @@
 import "./style.css";
 import heroImage from "./assets/hero.jpg";
-import productImageOne from "./assets/1c1c7ea9-37ee-492f-a40d-801aca34ea17-2026-08-13.jpg";
-import productImageTwo from "./assets/35b67c66-0b9d-4fe0-805d-a84fbbbab7a2-2026-08-13.jpg";
-import productImageThree from "./assets/4c9cf5be-0c67-4359-a139-9d63e02e8788-2026-08-13.jpg";
-import productImageFour from "./assets/6ec4bd0f-064d-4fcf-8206-48a06137fb12-2026-08-13.jpg";
-import productImageFive from "./assets/713954d6-bc10-4f90-8417-0e3ab5b3623e-2026-08-13.jpg";
-import productImageSix from "./assets/93b5fce2-42e8-4f80-8dc4-aae4d00ad38b-2026-08-13.jpg";
-import productImageSeven from "./assets/af5ca31b-629a-40e0-be7e-e51cacb590b7-2026-08-13.jpg";
-import productImageEight from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
-import productImageNine from "./assets/da55d7a6-5630-4f90-acd6-c9a32c45877d-2026-08-13.jpg";
-import { productCard, type Product } from "./components/product-card";
+import { getListings } from "./api/listings";
+import { renderListingCard } from "./components/product-card";
 import { renderFooter } from "./components/footer";
 import { renderNav } from "./components/nav";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
-
-const products: Product[] = [
-  {
-    image: productImageOne,
-    category: "Golf",
-    title: "Golf towel & accessories bundle",
-    price: "$45",
-    tradeFor: "Open to tennis gear",
-  },
-  {
-    image: productImageTwo,
-    category: "Apparel",
-    title: "Knit beanies & gloves set",
-    price: "$30",
-    tradeFor: "Open to any swap",
-  },
-  {
-    image: productImageThree,
-    category: "Golf",
-    title: "Full golf bag with club set",
-    price: "$180",
-    tradeFor: "Open to ski gear",
-  },
-  {
-    image: productImageFour,
-    category: "Padel",
-    title: "Padel kit",
-    price: "$45",
-    tradeFor: "Open to tennis gear",
-  },
-  {
-    image: productImageFive,
-    category: "Golf",
-    title: "Golf knitwear & winter set",
-    price: "$30",
-    tradeFor: "Open to any swap",
-  },
-  {
-    image: productImageSix,
-    category: "Tennis",
-    title: "Complete tennis set",
-    price: "$180",
-    tradeFor: "Open to ski gear",
-  },
-  {
-    image: productImageSeven,
-    category: "Golf",
-    title: "Embroidered towel set",
-    price: "$20",
-    tradeFor: "Open to any swap",
-  },
-  {
-    image: productImageEight,
-    category: "Paddling",
-    title: "Kayak, paddles and matching kit",
-    price: "$670",
-    tradeFor: "Open to tennis gear",
-  },
-  {
-    image: productImageNine,
-    category: "Tennis",
-    title: "Tennis racket",
-    price: "$25",
-    tradeFor: "Open to running gear",
-  },
-];
 
 app.innerHTML = `
   <section
@@ -136,8 +62,8 @@ app.innerHTML = `
         </a>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        ${products.slice(0, 3).map(productCard).join("")}
+      <div id="popular-listings" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <p class="text-sm text-charcoal/60">Loading listings...</p>
       </div>
     </div>
   </section>
@@ -217,8 +143,8 @@ app.innerHTML = `
         </button>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        ${products.map(productCard).join("")}
+      <div id="sport-listings" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <p class="text-sm text-charcoal/60">Loading listings...</p>
       </div>
 
       <div class="mt-10 text-center">
@@ -236,3 +162,38 @@ app.innerHTML = `
 
 renderNav("nav-root");
 renderFooter("footer-root");
+
+const popularListings =
+  document.querySelector<HTMLDivElement>("#popular-listings")!;
+const sportListings =
+  document.querySelector<HTMLDivElement>("#sport-listings")!;
+
+async function loadHomeListings(): Promise<void> {
+  try {
+    const result = await getListings({
+      limit: 30,
+      sort: "created",
+      sortOrder: "desc",
+    });
+    const listings = result.data;
+
+    // The API cannot sort by bid count, so popular listings are sorted in JavaScript.
+    const popular = [...listings]
+      .sort(
+        (firstListing, secondListing) =>
+          (secondListing.bids?.length ?? 0) - (firstListing.bids?.length ?? 0),
+      )
+      .slice(0, 3);
+    const newest = listings.slice(0, 9);
+
+    popularListings.innerHTML = popular.map(renderListingCard).join("");
+    sportListings.innerHTML = newest.map(renderListingCard).join("");
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Something went wrong";
+    popularListings.innerHTML = `<p class="text-sm text-red-600">${message}</p>`;
+    sportListings.innerHTML = `<p class="text-sm text-red-600">${message}</p>`;
+  }
+}
+
+void loadHomeListings();

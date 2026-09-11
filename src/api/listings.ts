@@ -9,6 +9,7 @@ export interface Listing {
   created: string;
   updated: string;
   endsAt: string;
+  bids?: Bid[];
   _count?: { bids: number };
   seller?: { name: string; email: string };
 }

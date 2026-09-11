@@ -22,7 +22,7 @@
       <section class="px-6 py-10 md:px-16 md:py-14">
         <form
           id="listing-form"
-          class="mx-auto flex w-full max-w-[720px] flex-col gap-6"
+          class="mx-auto flex w-full max-w-[1020px] flex-col gap-7"
         >
           <div class="flex flex-col gap-2">
             <label for="title" class="text-sm font-medium text-charcoal"
@@ -32,74 +32,128 @@
               type="text"
               id="title"
               required
-              class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+              placeholder="e.g. Golf accessories bundle"
+              class="w-full max-w-[622px] rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             />
           </div>
 
-          <div class="flex flex-col gap-2">
-            <label for="deadline" class="text-sm font-medium text-charcoal"
-              >Deadline date</label
-            >
-            <input
-              type="date"
-              id="deadline"
-              required
-              class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
-            />
+          <div class="grid max-w-[622px] gap-5 md:grid-cols-2">
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-medium text-charcoal" for="category"
+                >Category</label
+              >
+              <select
+                id="category"
+                class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-sm text-charcoal/50 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+              >
+                <option value="">Select a sport</option>
+                <option>Golf</option>
+                <option>Tennis</option>
+                <option>Ski &amp; Snow</option>
+                <option>Running</option>
+                <option>Cycling</option>
+                <option>Team Sports</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label
+                class="text-sm font-medium text-charcoal"
+                for="listing-type"
+                >Listing type</label
+              >
+              <select
+                id="listing-type"
+                class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-sm text-charcoal/50 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+              >
+                <option>Auction</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label
+                class="text-sm font-medium text-charcoal"
+                for="starting-price"
+                >Starting price / bid ($)</label
+              >
+              <input
+                id="starting-price"
+                type="number"
+                min="0"
+                placeholder="45"
+                class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+              />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="deadline" class="text-sm font-medium text-charcoal"
+                >Deadline date</label
+              >
+              <input
+                type="date"
+                id="deadline"
+                required
+                class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+              />
+            </div>
           </div>
 
-          <div class="flex flex-col gap-2">
+          <div class="flex max-w-[622px] flex-col gap-2">
             <label class="text-sm font-medium text-charcoal"
               >Media gallery</label
             >
-            <div id="media-inputs" class="flex flex-col gap-3">
+            <div
+              id="media-inputs"
+              class="flex min-h-[138px] flex-col justify-center gap-3 rounded-xl border-2 border-dashed border-sage bg-stone px-6 py-7"
+            >
               <input
                 type="url"
-                placeholder="https://..."
-                class="media-url-input w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
+                placeholder="Image URL"
+                class="media-url-input mx-auto w-full max-w-[460px] rounded-lg border border-stone bg-white px-4 py-2.5 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
               />
             </div>
             <button
               type="button"
               id="add-media-btn"
-              class="mt-1 self-start text-sm font-medium text-forest hover:underline"
+              class="self-start text-sm font-medium text-forest hover:underline"
             >
               + Add another photo
             </button>
           </div>
 
-          <div class="flex flex-col gap-2">
+          <div class="flex max-w-[622px] flex-col gap-2">
             <label for="description" class="text-sm font-medium text-charcoal"
               >Description</label
             >
             <textarea
               id="description"
-              rows="5"
+              rows="6"
               required
+              placeholder="Describe the condition, brand, and why you're selling or swapping it..."
               class="w-full rounded-lg border border-stone bg-white px-4 py-3 text-charcoal placeholder:text-charcoal/40 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             ></textarea>
           </div>
 
           <p id="form-error" class="hidden text-sm text-red-600"></p>
 
-          <div class="flex flex-wrap items-center gap-4">
+          <div class="flex flex-wrap items-center gap-3">
             <button
               type="submit"
               id="submit-btn"
-              class="rounded-lg bg-forest px-8 py-3 text-white"
+              class="rounded-lg bg-forest px-7 py-3 text-sm text-white transition-colors hover:bg-forest/90"
             >
               Publish Listing
             </button>
             <a
               href="/browse.html"
-              class="rounded-lg border border-stone px-8 py-3 text-charcoal hover:bg-stone"
+              class="rounded-lg border border-stone px-7 py-3 text-sm text-charcoal hover:bg-stone"
             >
               Cancel
             </a>
             <button
               type="button"
               id="delete-btn"
-              class="hidden rounded-lg border border-red-600 bg-white px-8 py-3 text-red-600"
+              class="hidden rounded-lg border border-red-600 bg-white px-7 py-3 text-sm text-red-600"
             >
               Delete Listing
             </button>
