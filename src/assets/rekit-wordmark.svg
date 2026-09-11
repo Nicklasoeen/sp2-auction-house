@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 605 170" role="img" aria-label="REKIT">
+  
+  
+<g fill="#2F4A3A">
+  <!-- R -->
+  <path fill-rule="evenodd" d="
+    M9 9 H80
+    C108 9 125 29 125 58
+    C125 77 114 91 96 100
+    L136 160 H110
+    L71 103 H31 V160 H8 V9 Z
+
+    M31 30 V82 H79
+    C94 82 103 73 103 58
+    C103 41 92 30 72 30 Z
+  "/>
+
+  <!-- E: TOP -->
+  <path d="
+    M155 9 H263 V30 H180
+    C179 30 178 31 178 32
+    V64 L158 78 H155 Z
+  "/>
+
+  <!-- E: ARROW / MIDDLE BAR — separate object -->
+  <path d="
+    M180 84
+    L198 66
+    V74 H254
+    V94 H200
+    V102 Z
+  "/>
+
+  <!-- E: BOTTOM -->
+  <path d="
+    M155 89
+    L178 104
+    V138
+    C178 139 179 140 180 140
+    H263 V160 H155 Z
+  "/>
+
+  <!-- K -->
+  <path d="
+    M292 9 H315 V74
+    L380 9 H409
+    L350 71
+    L419 160 H390
+    L333 87
+    L315 105 V160 H292 Z
+  "/>
+
+  <!-- I -->
+  <path d="M438 9 H460 V160 H438 Z"/>
+
+  <!-- T -->
+  <path d="
+    M478 9 H595 V30
+    H548 V160 H524
+    V30 H478 Z
+  "/>
+</g>
+
+  
+</svg>

@@ -1,5 +1,6 @@
 import "./style.css";
 import authImage from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
+import wordmarkWhite from "./assets/rekit-wordmark-white.svg";
 import { createApiKey, loginUser } from "./api/auth";
 import { saveAuth } from "./utils/auth-storage";
 
@@ -13,7 +14,7 @@ app.innerHTML = `
     >
       <div class="absolute inset-0 bg-black/35"></div>
 
-      <div class="relative z-10 text-3xl font-bold uppercase tracking-widest text-white">REKIT</div>
+      <img src="${wordmarkWhite}" alt="REKIT" class="relative z-10 h-10 w-auto self-start" />
 
       <div class="relative z-10 space-y-4">
         <h1 class="text-5xl font-bold leading-tight text-white">Your campus's gear marketplace.</h1>
