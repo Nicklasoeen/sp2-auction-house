@@ -3,8 +3,7 @@ import { renderNav } from "./components/nav";
 import { renderFooter } from "./components/footer";
 import { getAuth } from "./utils/auth-storage";
 import { getProfile, getProfileListings, getProfileBids } from "./api/profile";
-import { renderListingCard } from "./components/product-card";
-import { getRelativeTime } from "./utils/time";
+import { getRelativeTime, getTimeLeft } from "./utils/time";
 
 await renderNav("nav-root");
 renderFooter("footer-root");
@@ -29,6 +28,7 @@ const tabBids = document.querySelector<HTMLButtonElement>("#tab-bids")!;
 const listingsPanel =
   document.querySelector<HTMLDivElement>("#listings-panel")!;
 const bidsPanel = document.querySelector<HTMLDivElement>("#bids-panel")!;
+const bidsCount = document.querySelector<HTMLSpanElement>("#bids-count")!;
 
 async function loadProfile(): Promise<void> {
   if (!auth) return;
@@ -66,8 +66,44 @@ async function loadListingsTab(): Promise<void> {
 
     listingsPanel.innerHTML =
       listings.length > 0
-        ? listings.map(renderListingCard).join("")
-        : `<p class="text-sm text-charcoal/60">You haven't listed anything yet.</p>`;
+        ? listings
+            .map((listing) => {
+              const image = listing.media[0];
+              const bids = listing.bids ?? [];
+              const bidCount = listing._count?.bids ?? bids.length;
+              const highestBid = Math.max(0, ...bids.map((bid) => bid.amount));
+              const isActive = new Date(listing.endsAt).getTime() > Date.now();
+              const price = highestBid > 0 ? `$${highestBid}` : "—";
+              const details =
+                bidCount > 0
+                  ? `${bidCount} bids · ${getTimeLeft(listing.endsAt)}`
+                  : `Open to ${listing.tags[1] ?? "offers"}`;
+
+              return `
+              <div class="flex flex-wrap items-center gap-6 border-b border-stone px-6 py-5 last:border-b-0 md:flex-nowrap">
+                ${image ? `<img src="${image.url}" alt="${image.alt || listing.title}" class="h-16 w-16 shrink-0 rounded-lg object-cover" />` : `<div class="h-16 w-16 shrink-0 rounded-lg bg-stone"></div>`}
+                <div class="min-w-[280px] flex-1">
+                  <p class="text-[10px] uppercase tracking-wide text-charcoal/50">${listing.tags[0] ?? "General"}</p>
+                  <a href="/product-detail.html?id=${encodeURIComponent(listing.id)}" class="text-sm font-medium text-charcoal hover:text-forest">${listing.title}</a>
+                </div>
+                <div class="w-28 text-sm">
+                  <p class="text-[10px] uppercase text-charcoal/50">${highestBid > 0 ? "Current bid" : "Price"}</p>
+                  <p class="font-semibold text-forest">${price}</p>
+                </div>
+                <div class="w-40 text-xs text-charcoal/60">
+                  <p class="uppercase text-charcoal/40">Details</p>
+                  <p>${details}</p>
+                </div>
+                <span class="rounded-full px-2 py-1 text-[8px] font-medium uppercase ${isActive ? "bg-forest text-white" : "bg-charcoal/50 text-white"}">${isActive ? "Active" : "Sold"}</span>
+                <div class="flex gap-2 text-[9px]">
+                  <a href="/create-listing.html?id=${encodeURIComponent(listing.id)}" class="text-forest hover:underline">Edit</a>
+                  <span class="text-charcoal/30">Delete</span>
+                </div>
+              </div>
+            `;
+            })
+            .join("")
+        : `<p class="px-5 py-4 text-sm text-charcoal/60">You haven't listed anything yet.</p>`;
   } catch (error) {
     listingsPanel.innerHTML = `<p class="text-sm text-red-600">${
       error instanceof Error ? error.message : "Something went wrong"
@@ -80,30 +116,52 @@ async function loadBidsTab(): Promise<void> {
 
   try {
     const bids = await getProfileBids(auth.name, auth.accessToken, auth.apiKey);
+    bidsCount.textContent = bids.length > 0 ? `(${bids.length})` : "";
 
     bidsPanel.innerHTML =
       bids.length > 0
         ? bids
             .map((bid) => {
-              const image = bid.listing.media[0];
+              const listing = bid.listing;
+              const image = listing?.media?.[0];
+              const listingTitle = listing?.title ?? "Listing unavailable";
+              const listingHref = listing?.id
+                ? `/product-detail.html?id=${encodeURIComponent(listing.id)}`
+                : "/browse.html";
+              const currentBid = listing?.bids?.length
+                ? Math.max(
+                    ...listing.bids.map((listingBid) => listingBid.amount),
+                  )
+                : bid.amount;
+              const isWinning = bid.amount >= currentBid;
 
               return `
                 <a
-                  href="/product-detail.html?id=${encodeURIComponent(bid.listing.id)}"
-                  class="flex items-center justify-between gap-4 border-b border-stone px-5 py-4 last:border-b-0 hover:bg-stone/50"
+                  href="${listingHref}"
+                  class="flex flex-wrap items-center gap-6 border-b border-stone px-6 py-5 last:border-b-0 hover:bg-stone/50 md:flex-nowrap"
                 >
-                  <div class="flex items-center gap-4">
+                  <div class="flex min-w-[280px] flex-1 items-center gap-4">
                     ${
                       image
-                        ? `<img src="${image.url}" alt="${image.alt || bid.listing.title}" class="h-14 w-14 rounded-lg object-cover" />`
-                        : `<div class="h-14 w-14 rounded-lg bg-stone"></div>`
+                        ? `<img src="${image.url}" alt="${image.alt || listingTitle}" class="h-16 w-16 rounded-lg object-cover" />`
+                        : `<div class="h-16 w-16 rounded-lg bg-stone"></div>`
                     }
                     <div>
-                      <p class="text-sm font-medium text-charcoal">${bid.listing.title}</p>
+                      <p class="text-[10px] uppercase tracking-wide text-charcoal/50">${listing?.tags?.[0] ?? "General"}</p>
+                      <p class="text-sm font-medium text-charcoal">${listingTitle}</p>
                       <p class="mt-1 text-xs text-charcoal/60">${getRelativeTime(bid.created)}</p>
                     </div>
                   </div>
-                  <span class="text-sm font-semibold text-forest">$${bid.amount}</span>
+                  <div class="w-28 text-sm">
+                    <p class="text-[10px] uppercase text-charcoal/50">Your bid</p>
+                    <p class="font-semibold text-charcoal">$${bid.amount}</p>
+                  </div>
+                  <div class="w-28 text-sm">
+                    <p class="text-[10px] uppercase text-charcoal/50">Current bid</p>
+                    <p class="font-semibold text-forest">$${currentBid}</p>
+                  </div>
+                  <span class="rounded-full px-2 py-1 text-[8px] font-medium uppercase ${isWinning ? "bg-forest text-white" : "bg-charcoal text-white"}">${isWinning ? "Winning" : "Outbid"}</span>
+                  <span class="w-16 text-right text-xs text-charcoal/60">${listing ? getTimeLeft(listing.endsAt) : ""}</span>
                 </a>
               `;
             })

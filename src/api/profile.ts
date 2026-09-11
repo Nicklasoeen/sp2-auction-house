@@ -16,10 +16,12 @@ export interface ProfileBid {
   id: string;
   amount: number;
   created: string;
-  listing: {
+  listing?: {
     id: string;
     title: string;
     media: { url: string; alt: string }[];
+    tags?: string[];
+    bids?: { amount: number }[];
     endsAt: string;
   };
 }
@@ -87,7 +89,7 @@ export async function getProfileBids(
   apiKey: string,
 ): Promise<ProfileBid[]> {
   const response = await fetch(
-    `${API_BASE_URL}/auction/profiles/${encodeURIComponent(name)}/bids?_listing=true`,
+    `${API_BASE_URL}/auction/profiles/${encodeURIComponent(name)}/bids?_listings=true`,
     { headers: authHeaders(accessToken, apiKey) },
   );
   const result = await handleApiResponse<{ data: ProfileBid[] }>(response);
