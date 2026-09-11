@@ -122,23 +122,26 @@ app.innerHTML = `
         </h2>
       </div>
 
-      <div class="mb-8 flex flex-wrap gap-2">
-        <button class="rounded-full bg-forest px-4 py-2 text-xs font-medium text-white" type="button">
+      <div id="sport-filters" class="mb-8 flex flex-wrap gap-2">
+        <button data-tag="" class="rounded-full bg-forest px-4 py-2 text-xs font-medium text-white" type="button">
+          All
+        </button>
+        <button data-tag="Golf" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Golf
         </button>
-        <button class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
+        <button data-tag="Tennis" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Tennis
         </button>
-        <button class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
+        <button data-tag="Ski &amp; Snow" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Ski &amp; Snow
         </button>
-        <button class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
+        <button data-tag="Running" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Running
         </button>
-        <button class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
+        <button data-tag="Cycling" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Cycling
         </button>
-        <button class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
+        <button data-tag="Team Sports" class="rounded-full bg-stone px-4 py-2 text-xs font-medium text-charcoal" type="button">
           Team Sports
         </button>
       </div>
@@ -167,6 +170,9 @@ const popularListings =
   document.querySelector<HTMLDivElement>("#popular-listings")!;
 const sportListings =
   document.querySelector<HTMLDivElement>("#sport-listings")!;
+const sportFilters = document.querySelectorAll<HTMLButtonElement>(
+  "#sport-filters button",
+);
 
 async function loadHomeListings(): Promise<void> {
   try {
@@ -188,6 +194,27 @@ async function loadHomeListings(): Promise<void> {
 
     popularListings.innerHTML = popular.map(renderListingCard).join("");
     sportListings.innerHTML = newest.map(renderListingCard).join("");
+
+    sportFilters.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedTag = button.dataset.tag ?? "";
+        const filteredListings = selectedTag
+          ? listings.filter((listing) => listing.tags.includes(selectedTag))
+          : newest;
+
+        sportListings.innerHTML = filteredListings
+          .slice(0, 9)
+          .map(renderListingCard)
+          .join("");
+
+        sportFilters.forEach((filter) => {
+          filter.classList.remove("bg-forest", "text-white");
+          filter.classList.add("bg-stone", "text-charcoal");
+        });
+        button.classList.remove("bg-stone", "text-charcoal");
+        button.classList.add("bg-forest", "text-white");
+      });
+    });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Something went wrong";
