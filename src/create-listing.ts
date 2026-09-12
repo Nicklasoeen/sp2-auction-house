@@ -22,6 +22,7 @@ const listingId = new URLSearchParams(window.location.search).get("id");
 
 const form = document.querySelector<HTMLFormElement>("#listing-form")!;
 const titleInput = document.querySelector<HTMLInputElement>("#title")!;
+const categoryInput = document.querySelector<HTMLSelectElement>("#category")!;
 const deadlineInput = document.querySelector<HTMLInputElement>("#deadline")!;
 const descriptionInput =
   document.querySelector<HTMLTextAreaElement>("#description")!;
@@ -59,6 +60,7 @@ if (listingId && auth) {
       }
 
       titleInput.value = listing.title;
+      categoryInput.value = listing.tags?.[0] ?? "";
       descriptionInput.value = listing.description;
       deadlineInput.value = listing.endsAt.slice(0, 10);
 
@@ -89,6 +91,7 @@ form.addEventListener("submit", async (e) => {
   formError.classList.add("hidden");
 
   const title = titleInput.value.trim();
+  const category = categoryInput.value;
   const deadline = deadlineInput.value;
   const description = descriptionInput.value.trim();
   const media = Array.from(
@@ -129,7 +132,7 @@ form.addEventListener("submit", async (e) => {
 
       await updateListing(
         listingId,
-        { title, description, media, endsAt },
+        { title, description, tags: [category], media, endsAt },
         auth.accessToken,
         auth.apiKey,
       );
@@ -140,7 +143,7 @@ form.addEventListener("submit", async (e) => {
       submitButton.textContent = "Publishing...";
 
       const listing = await createListing(
-        { title, description, media, endsAt },
+        { title, description, tags: [category], media, endsAt },
         auth.accessToken,
         auth.apiKey,
       );
