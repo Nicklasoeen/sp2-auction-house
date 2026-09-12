@@ -11,7 +11,7 @@ renderFooter("footer-root");
 const auth = getAuth();
 
 if (!auth) {
-  window.location.href = "/login.html";
+  window.location.href = "./login.html";
 }
 
 const profileAvatar =
@@ -84,7 +84,7 @@ async function loadListingsTab(): Promise<void> {
                 ${image ? `<img src="${image.url}" alt="${image.alt || listing.title}" class="h-16 w-16 shrink-0 rounded-lg object-cover" />` : `<div class="h-16 w-16 shrink-0 rounded-lg bg-stone"></div>`}
                 <div class="min-w-[280px] flex-1">
                   <p class="text-[10px] uppercase tracking-wide text-charcoal/50">${listing.tags[0] ?? "General"}</p>
-                  <a href="/product-detail.html?id=${encodeURIComponent(listing.id)}" class="text-sm font-medium text-charcoal hover:text-forest">${listing.title}</a>
+                  <a href="./product-detail.html?id=${encodeURIComponent(listing.id)}" class="text-sm font-medium text-charcoal hover:text-forest">${listing.title}</a>
                 </div>
                 <div class="w-28 text-sm">
                   <p class="text-[10px] uppercase text-charcoal/50">${highestBid > 0 ? "Current bid" : "Price"}</p>
@@ -96,7 +96,7 @@ async function loadListingsTab(): Promise<void> {
                 </div>
                 <span class="rounded-full px-2 py-1 text-[8px] font-medium uppercase ${isActive ? "bg-forest text-white" : "bg-charcoal/50 text-white"}">${isActive ? "Active" : "Sold"}</span>
                 <div class="flex gap-2 text-[9px]">
-                  <a href="/create-listing.html?id=${encodeURIComponent(listing.id)}" class="text-forest hover:underline">Edit</a>
+                  <a href="./create-listing.html?id=${encodeURIComponent(listing.id)}" class="text-forest hover:underline">Edit</a>
                   <span class="text-charcoal/30">Delete</span>
                 </div>
               </div>
@@ -127,7 +127,7 @@ async function loadBidsTab(): Promise<void> {
               const listingTitle = listing?.title ?? "Listing unavailable";
               const listingHref = listing?.id
                 ? `/product-detail.html?id=${encodeURIComponent(listing.id)}`
-                : "/browse.html";
+                : "./browse.html";
               const currentBid = listing?.bids?.length
                 ? Math.max(
                     ...listing.bids.map((listingBid) => listingBid.amount),

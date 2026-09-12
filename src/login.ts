@@ -29,7 +29,7 @@ app.innerHTML = `
             Log In
           </div>
           <a
-            href="/register.html"
+            href="./register.html"
             class="border-b-2 border-transparent pb-4 text-sm text-charcoal/50 transition-colors hover:text-charcoal"
           >
             Sign Up
@@ -80,7 +80,7 @@ app.innerHTML = `
 
         <p class="text-center text-sm text-charcoal">
           Don't have an account?
-          <a href="/register.html" class="font-medium text-forest hover:underline">Sign up</a>
+          <a href="./register.html" class="font-medium text-forest hover:underline">Sign up</a>
         </p>
 
         <p class="text-center text-xs text-charcoal/60">
@@ -135,7 +135,7 @@ form.addEventListener("submit", async (event) => {
       accessToken: user.accessToken,
       apiKey,
     });
-    window.location.href = "/index.html";
+    window.location.href = "./index.html";
   } catch (error) {
     showError(error instanceof Error ? error.message : "Something went wrong");
   } finally {

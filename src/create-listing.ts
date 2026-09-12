@@ -15,7 +15,7 @@ renderFooter("footer-root");
 const auth = getAuth();
 
 if (!auth) {
-  window.location.href = "/login.html";
+  window.location.href = "./login.html";
 }
 
 const listingId = new URLSearchParams(window.location.search).get("id");
@@ -53,7 +53,7 @@ if (listingId && auth) {
         formError.textContent = "You can only edit your own listings.";
         formError.classList.remove("hidden");
         setTimeout(() => {
-          window.location.href = `/product-detail.html?id=${listingId}`;
+          window.location.href = `./product-detail.html?id=${listingId}`;
         }, 2000);
         return;
       }
@@ -134,7 +134,7 @@ form.addEventListener("submit", async (e) => {
         auth.apiKey,
       );
 
-      window.location.href = `/product-detail.html?id=${listingId}`;
+      window.location.href = `./product-detail.html?id=${listingId}`;
     } else {
       // create
       submitButton.textContent = "Publishing...";
@@ -145,7 +145,7 @@ form.addEventListener("submit", async (e) => {
         auth.apiKey,
       );
 
-      window.location.href = `/product-detail.html?id=${listing.id}`;
+      window.location.href = `./product-detail.html?id=${listing.id}`;
     }
   } catch (error) {
     formError.textContent =
@@ -172,7 +172,7 @@ deleteButton.addEventListener("click", async () => {
   try {
     await deleteListing(listingId, auth.accessToken, auth.apiKey);
 
-    window.location.href = "/browse.html";
+    window.location.href = "./browse.html";
   } catch (error) {
     formError.textContent =
       error instanceof Error ? error.message : "Something went wrong";

@@ -44,7 +44,7 @@ let highestBidAmount = 0;
 if (!auth) {
   bidFormArea.innerHTML = `
     <p class="text-center text-sm text-charcoal/70">
-      <a href="/login.html" class="font-medium text-forest hover:underline">Log in</a> to place a bid.
+      <a href="./login.html" class="font-medium text-forest hover:underline">Log in</a> to place a bid.
     </p>
   `;
 }
@@ -82,7 +82,7 @@ async function loadListing(): Promise<void> {
 
     if (auth && listing.seller?.name === auth.name) {
       editListingLink.classList.remove("hidden");
-      editListingLink.href = `/create-listing.html?id=${listingId}`;
+      editListingLink.href = `./create-listing.html?id=${listingId}`;
     }
 
     const firstImage = listing.media[0];

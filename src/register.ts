@@ -27,7 +27,7 @@ app.innerHTML = `
       <div class="w-full max-w-[380px] space-y-6 px-6 py-12 md:px-0 md:py-0">
         <div class="flex gap-6 border-b border-stone">
             <a
-              href="/login.html"
+              href="./login.html"
               class="border-b-2 border-transparent pb-4 text-sm text-charcoal/50 transition-colors hover:text-charcoal"
             >
               Log In
@@ -91,7 +91,7 @@ app.innerHTML = `
 
         <p class="text-center text-sm text-charcoal">
           Already have an account?
-          <a href="/login.html" class="font-medium text-forest hover:underline">Log in</a>
+          <a href="./login.html" class="font-medium text-forest hover:underline">Log in</a>
         </p>
 
         <p class="text-center text-xs text-charcoal/60">
@@ -170,7 +170,7 @@ form.addEventListener("submit", async (e) => {
     const apiKey = await createApiKey(accessToken);
 
     saveAuth({ name: user.name, email: user.email, accessToken, apiKey });
-    window.location.href = "/index.html";
+    window.location.href = "./index.html";
   } catch (error) {
     showError(error instanceof Error ? error.message : "Something went wrong");
   } finally {

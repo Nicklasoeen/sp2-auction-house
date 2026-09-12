@@ -10,7 +10,7 @@ renderFooter("footer-root");
 const auth = getAuth();
 
 if (!auth) {
-  window.location.href = "/login.html";
+  window.location.href = "./login.html";
 }
 
 const form = document.querySelector<HTMLFormElement>("#edit-profile-form")!;
@@ -62,7 +62,7 @@ form.addEventListener("submit", async (event) => {
     saveButton.textContent = "Saving...";
 
     await updateProfile(auth.name, payload, auth.accessToken, auth.apiKey);
-    window.location.href = "/profile.html";
+    window.location.href = "./profile.html";
   } catch (error) {
     formError.textContent =
       error instanceof Error ? error.message : "Something went wrong";

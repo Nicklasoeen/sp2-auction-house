@@ -44,7 +44,7 @@ export function renderListingCard(listing: Listing): string {
 
   return `
     <a
-      href="/product-detail.html?id=${encodeURIComponent(listing.id)}"
+      href="./product-detail.html?id=${encodeURIComponent(listing.id)}"
       class="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(43,43,43,0.08)] transition-shadow hover:shadow-[0_12px_30px_rgba(43,43,43,0.12)]"
     >
       <div class="relative h-60 bg-stone">

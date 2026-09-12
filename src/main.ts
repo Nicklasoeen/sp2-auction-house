@@ -26,7 +26,7 @@ app.innerHTML = `
 
           <div class="mt-7 flex flex-wrap gap-3">
             <a
-              href="/browse.html"
+              href="./browse.html"
               class="rounded-lg bg-white px-5 py-3 text-sm font-medium text-charcoal transition-colors hover:bg-stone"
             >
               Browse Gear
@@ -55,7 +55,7 @@ app.innerHTML = `
           </h2>
         </div>
         <a
-              href="/browse.html"
+              href="./browse.html"
           class="hidden text-xs font-medium uppercase tracking-wider text-forest transition-opacity hover:opacity-60 sm:block"
         >
           See all listings
@@ -152,7 +152,7 @@ app.innerHTML = `
 
       <div class="mt-10 text-center">
         <a
-          href="/browse.html"
+          href="./browse.html"
           class="inline-flex rounded-lg border border-forest px-5 py-2.5 text-xs font-medium text-forest transition-colors hover:bg-forest hover:text-white"
         >
           See all listings

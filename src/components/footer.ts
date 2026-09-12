@@ -12,7 +12,7 @@ export function renderFooter(containerId: string): void {
             <p class="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-stone md:text-base">
               List it in five minutes. Someone on your campus is probably looking for it right now.
             </p>
-            <a href="/create-listing.html" class="mt-7 inline-flex rounded-full bg-white px-6 py-3 text-sm font-medium text-forest transition-colors hover:bg-stone">
+            <a href="./create-listing.html" class="mt-7 inline-flex rounded-full bg-white px-6 py-3 text-sm font-medium text-forest transition-colors hover:bg-stone">
               List Your Gear
             </a>
           </div>
@@ -21,10 +21,10 @@ export function renderFooter(containerId: string): void {
 
           <div class="grid gap-8 text-sm text-white/75 md:grid-cols-2">
             <nav aria-label="Footer navigation" class="flex flex-col gap-4">
-              <a href="/index.html" class="transition-colors hover:text-white">Home</a>
-              <a href="/browse.html" class="transition-colors hover:text-white">Browse Gear</a>
-              <a href="/index.html#how-it-works" class="transition-colors hover:text-white">How It Works</a>
-              <a href="/create-listing.html" class="transition-colors hover:text-white">Sell Your Gear</a>
+              <a href="./index.html" class="transition-colors hover:text-white">Home</a>
+              <a href="./browse.html" class="transition-colors hover:text-white">Browse Gear</a>
+              <a href="./index.html#how-it-works" class="transition-colors hover:text-white">How It Works</a>
+              <a href="./create-listing.html" class="transition-colors hover:text-white">Sell Your Gear</a>
             </nav>
 
             <div class="flex flex-col gap-4">
