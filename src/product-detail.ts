@@ -40,6 +40,7 @@ const editListingLink =
   document.querySelector<HTMLAnchorElement>("#edit-listing-link")!;
 const auth = getAuth();
 let highestBidAmount = 0;
+let isOwner = false;
 
 if (!auth) {
   bidFormArea.innerHTML = `
@@ -57,6 +58,7 @@ async function loadListing(): Promise<void> {
 
   try {
     const listing = await getListing(listingId);
+    isOwner = Boolean(auth && listing.seller?.name === auth.name);
     const bids = listing.bids ?? [];
     const highestBid = Math.max(0, ...bids.map((bid) => bid.amount));
     highestBidAmount = highestBid;
@@ -80,9 +82,13 @@ async function loadListing(): Promise<void> {
       { month: "short", day: "numeric", year: "numeric" },
     );
 
-    if (auth && listing.seller?.name === auth.name) {
+    if (isOwner) {
       editListingLink.classList.remove("hidden");
       editListingLink.href = `./create-listing.html?id=${listingId}`;
+    }
+
+    if (isOwner) {
+      bidFormArea.innerHTML = `<p class="text-center text-sm text-charcoal/70">You can't bid on your own listing.</p>`;
     }
 
     const firstImage = listing.media[0];
@@ -144,6 +150,12 @@ async function loadListing(): Promise<void> {
 
 if (auth) {
   placeBidButton.addEventListener("click", async () => {
+    if (isOwner) {
+      bidError.textContent = "You can't bid on your own listing.";
+      bidError.classList.remove("hidden");
+      return;
+    }
+
     bidError.textContent = "";
     bidError.classList.add("hidden");
 
