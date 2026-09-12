@@ -1,5 +1,5 @@
 import "./style.css";
-import authImage from "./assets/d8d1c8f7-cdc6-4f14-afd1-25f6f8904ec9-2026-08-13.jpg";
+import authImage from "./assets/hero.jpg";
 import wordmarkWhite from "./assets/rekit-wordmark-white.svg";
 import { createApiKey, loginUser } from "./api/auth";
 import { saveAuth } from "./utils/auth-storage";
