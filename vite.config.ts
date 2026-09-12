@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 
 export default defineConfig({
-  base: "./",
+  base: "/sp2-auction-house/",
   build: {
     rollupOptions: {
       input: {
