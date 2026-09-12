@@ -11,12 +11,12 @@ export async function renderNav(containerId: string): Promise<void> {
 
   containerEl.innerHTML = `
     <nav class="relative flex items-center justify-between gap-6 border-b border-stone bg-white px-6 py-4 md:px-16">
-      <a href="./index.html" aria-label="REKIT home">
+      <a href="./" aria-label="REKIT home">
         <img src="${wordmark}" alt="REKIT" class="h-8 w-auto" />
       </a>
 
       <div class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-xs font-medium uppercase tracking-wider text-charcoal md:flex">
-        <a href="./index.html" class="transition-opacity hover:opacity-60">Home</a>
+        <a href="./" class="transition-opacity hover:opacity-60">Home</a>
         <a href="./browse.html" class="transition-opacity hover:opacity-60">Browse</a>
         <a href="./index.html#how-it-works" class="transition-opacity hover:opacity-60">How It Works</a>
       </div>
@@ -64,7 +64,7 @@ export async function renderNav(containerId: string): Promise<void> {
 
     <div id="mobile-menu" class="hidden border-b border-stone bg-white px-6 py-5 md:hidden">
       <div class="flex flex-col gap-4 text-sm font-medium text-charcoal">
-        <a href="./index.html" class="transition-opacity hover:opacity-60">Home</a>
+        <a href="./" class="transition-opacity hover:opacity-60">Home</a>
         <a href="./browse.html" class="transition-opacity hover:opacity-60">Browse</a>
         <a href="./index.html#how-it-works" class="transition-opacity hover:opacity-60">How It Works</a>
         ${
