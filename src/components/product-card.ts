@@ -40,7 +40,13 @@ export function productCard({
 export function renderListingCard(listing: Listing): string {
   const image = listing.media[0];
   const category = listing.tags[0] ?? "GENERAL";
-  const bidCount = listing._count?.bids ?? 0;
+  const highestBid =
+    listing.bids && listing.bids.length > 0
+      ? Math.max(...listing.bids.map((bid) => bid.amount))
+      : null;
+  const bidCountText = listing._count?.bids
+    ? `${listing._count.bids} bid${listing._count.bids === 1 ? "" : "s"}`
+    : "No bids yet";
 
   return `
     <a
@@ -66,7 +72,8 @@ export function renderListingCard(listing: Listing): string {
         <div class="mt-auto flex items-end justify-between gap-3">
           <div>
             <p class="text-xs font-medium uppercase tracking-wide text-charcoal/60">Current bid</p>
-            <strong class="mt-1 block text-xl text-forest">${bidCount} bids</strong>
+            <strong class="mt-1 block text-xl text-forest">${highestBid !== null ? `$${highestBid}` : "—"}</strong>
+            <p class="mt-0.5 text-xs text-charcoal/50">${bidCountText}</p>
           </div>
           <span class="text-right text-xs text-charcoal/70">${getTimeLeft(listing.endsAt)}</span>
         </div>
